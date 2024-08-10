@@ -10,6 +10,8 @@ export default function Login() {
   const { open } = useWeb3Modal()
   const { push } = useRouter();
 
+  console.log(walletInfo)
+
   const onSubmit = (data: any) => {
     console.log(data);
     push("/internal/dashboard");
