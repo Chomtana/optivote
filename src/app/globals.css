@@ -1,0 +1,16 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body{
+  background-color: white;
+}
+  .gradient-text {
+    background: linear-gradient(180deg, #72EDF2, #5151E5);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .h-full-screen{
+    height: calc(100vh - 80px)
+  }
