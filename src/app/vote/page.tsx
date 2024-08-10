@@ -12,6 +12,7 @@ export default function Vote() {
   console.log(voting)
 
   const votingTotal = voting.projects.reduce((acc, curr) => acc + curr.allocation, 0)
+  const maxOP = voting.categories.opResearch
 
   return (
     <div className="relative">
@@ -75,21 +76,21 @@ export default function Vote() {
                       Total OP Allocation
                     </div>
                     <div className="text-display-xs font-semibold text-[#E44000]">
-                      15,000,000
+                      {maxOP.toLocaleString('en-US', { maximumFractionDigits: 0 })}
                     </div>
                   </div>
                   <div className="w-1/2 rounded-2xl bg-[#F2F4F7] p-4">
                     <div className="mb-2 text-sm font-medium text-[#475467]">
-                      Total Available
+                      Total Allocated
                     </div>
                     <div className="text-display-xs font-semibold text-[#079455]">
-                      5,000,000
+                      {votingTotal.toLocaleString('en-US', { maximumFractionDigits: 0 })}
                     </div>
                   </div>
                 </div>
                 <div className="flex items-center gap-3">
-                  <Progress value={50} />
-                  <div>50%</div>
+                  <Progress value={maxOP ? votingTotal / maxOP * 100 : 0} />
+                  <div>{(maxOP ? votingTotal / maxOP * 100 : 0).toFixed(2)}%</div>
                 </div>
               </div>
               <div className="mt-5 flex flex-col gap-5 rounded-3xl border border-[#E4E7EC] p-6 shadow-sm">
@@ -105,8 +106,9 @@ export default function Vote() {
                     <ProjectCardItem
                       key={ele.id}
                       name={ele.name}
-                      value={60}
+                      projectId={ele.id}
                       image={ele.profileImageUrl}
+                      maxOP={maxOP}
                     />
                   );
                 })}

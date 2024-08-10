@@ -1,16 +1,29 @@
+import { useVoting } from "@/reducer/votingReducer";
 import { Progress } from "../../progress";
 import { Separator } from "../../separator";
+import { numText, textNum } from "@/lib/utils";
 
 interface ProjectCardItemProps {
   name: string;
+  projectId: string;
   image: string;
-  value: number;
+  maxOP: number;
 }
 export const ProjectCardItem = ({
   name,
-  value,
+  projectId,
   image,
+  maxOP,
 }: ProjectCardItemProps) => {
+  const [ voting, dispatch ] = useVoting()
+
+  const project = voting.projects.find(x => x.projectId == projectId) || {
+    projectId,
+    allocation: 0,
+  }
+
+  const percent = maxOP ? project.allocation / maxOP * 100 : 0
+
   return (
     <div>
       <div className="flex items-center">
@@ -20,17 +33,22 @@ export const ProjectCardItem = ({
         </div>
         <div className="px-6 py-4">
           <Progress
-            value={value}
+            value={percent}
             className="w-[110px]"
             progressColor="#079455"
           />
-          <div className="mt-2 text-right text-[#344054]">{value}%</div>
+          <div className="mt-2 text-right text-[#344054]">{percent.toFixed(2)}%</div>
         </div>
         <div className="flex-1 px-6 py-4">
           <div className="relative flex">
             <input
               type="text"
-              value={"5,000,000"}
+              value={numText(project.allocation)}
+              onChange={e => dispatch({
+                type: 'projectChange',
+                projectId,
+                allocation: textNum(e.target.value),
+              })}
               className="w-full rounded-md border border-[#D0D5DD] py-2.5 pl-3.5 pr-8 shadow-sm"
             />
             <div className="absolute right-3 top-1/2 -translate-y-1/2 text-md text-[#344054]">
