@@ -1,6 +1,6 @@
-const GitHubButton = () => {
+const GitHubButton = (props: any) => {
   return (
-    <button className="flex w-full items-center justify-center gap-3 rounded-full border border-[#D0D5DD] px-6 py-2 text-md font-semibold text-[#344054] shadow transition duration-200">
+    <button className="flex w-full items-center justify-center gap-3 rounded-full border border-[#D0D5DD] px-6 py-2 text-md font-semibold text-[#344054] shadow transition duration-200" {...props}>
       <svg
         xmlns="http://www.w3.org/2000/svg"
         width="25"

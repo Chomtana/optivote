@@ -1,9 +1,11 @@
+'use client'
+
 export const NavBar = () => {
   return (
     <div className="mx-auto flex h-20 max-w-7xl items-center justify-between bg-primary-light px-8 text-md font-semibold text-[#475467]">
       <div className="flex">
         <img src="/logo/opti-vote.svg" alt="" className="mr-10" />
-        <div className="flex items-center gap-8">
+        {/* <div className="flex items-center gap-8">
           <div>Home</div>
           <div className="flex items-center">
             <div>Products</div>
@@ -14,7 +16,7 @@ export const NavBar = () => {
             <img src="icons/chevron-down.svg" alt="" className="h-5 w-5" />
           </div>
           <div className="">Pricing</div>
-        </div>
+        </div> */}
       </div>
       <div className="flex gap-3">
         <button>Log in</button>

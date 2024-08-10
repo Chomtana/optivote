@@ -4,7 +4,15 @@ import { Progress } from "@/components/ui/progress";
 import { ProjectCardItem } from "@/components/ui/project/vote/CardItem";
 import { Separator } from "@/components/ui/separator";
 import data from "../../../public/projects.json"; // Import the JSON data
+import { useVoting } from "@/reducer/votingReducer";
+
 export default function Vote() {
+  const [ voting, dispatch ] = useVoting()
+
+  console.log(voting)
+
+  const votingTotal = voting.projects.reduce((acc, curr) => acc + curr.allocation, 0)
+
   return (
     <div className="relative">
       <div className="mx-auto max-w-7xl px-8 pb-12 pt-8 text-[#101828]">

@@ -1,141 +1,64 @@
 "use client";
-import { Progress } from "@/components/ui/progress";
-import { Separator } from "@/components/ui/separator";
+import GitHubButton from "@/components/ui/Button/github";
+import { Separator } from "@radix-ui/react-separator";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
+import { useWalletInfo, useWeb3Modal } from '@web3modal/wagmi/react'
 
-export default function Home() {
+export default function Login() {
+  const { walletInfo } = useWalletInfo()
+  const { open } = useWeb3Modal()
   const { push } = useRouter();
-  // useEffect(() => {
-  //   push("/login");
-  // }, []);
+
+  const onSubmit = (data: any) => {
+    console.log(data);
+    push("/internal/dashboard");
+  };
 
   return (
-    <div className="relative">
+    <div className="h-full-screen relative bg-primary-light">
       <Image
-        src="/image/home-op-1.png"
+        src="/image/login-1.png"
+        className="absolute right-0 top-0 h-full max-h-[823px] overflow-hidden"
         alt=""
-        width={590}
-        height={842}
-        className="absolute top-1/4 h-[421px] w-[295px]"
+        width={279}
+        height={823}
       />
       <Image
-        src="/image/home-op-2.png"
+        src="/image/login-2.png"
+        className="absolute left-0 top-0 h-full max-h-[823px] overflow-hidden"
         alt=""
-        width={438}
-        height={646}
-        className="absolute right-0 top-10 h-[320px] w-[230px]"
+        width={279}
+        height={823}
       />
-
-      <div className="mx-auto max-w-xl pb-12 pt-8 text-[#101828]">
-        <div className="text-display-sm font-semibold text-[#101828]">
-          Customize Your OP Allocation
+      <div className="absolute bottom-0 left-1/2 h-[264px] w-full -translate-x-1/2 overflow-hidden">
+        <Image
+          src="/icons/vote.svg"
+          alt=""
+          className="h-full w-full object-cover object-top"
+          width={1934}
+          height={474}
+        />
+      </div>
+      <div className="relative z-50 mx-auto flex max-w-xl flex-col items-center justify-center pb-12 pt-24">
+        <img src="/logo/login-logo.svg" alt="" />
+        <div className="my-6 text-3xl font-semibold text-[#101828]">
+          Log in to your Github account
         </div>
-        <p className="text-md text-[#475467]">
-          Emphasizes that the allocation is based on contributions to the
-          Ethereum Core
+        <p className="text-center text-xl font-medium text-[#475467]">
+          To empower developers through community-driven project voting in the
+          Ethereum and Optimism ecosystems.
         </p>
-        <div className="mt-8 flex flex-col gap-5 rounded-3xl border border-[#E4E7EC] p-6 shadow-sm">
-          <div className="rounded-2xl bg-[#F2F4F7] p-4">
-            <div className="text-[#475467]">Total OP Allocation</div>
-            <div className="mt-2 text-md font-semibold">30,000,000</div>
-          </div>
-          <div className="flex items-center gap-3">
-            <Progress value={50} />
-            <div>50%</div>
-          </div>
-          <div>
-            <div className="flex items-center gap-3 rounded-t-2xl border-2 border-[#E44000] px-5 py-3">
-              <img src="/icons/stack.svg" alt="" />
-              <div>Ethereum Core Contributions</div>
-            </div>
-            <div className="flex w-full items-center justify-between gap-3 rounded-b-2xl border-2 border-t-0 border-[#E44000] p-5">
-              <div className="flex w-3/4">
-                <input
-                  type="text"
-                  value={"5,000,000"}
-                  className="w-full rounded-md rounded-r-none border border-[#D0D5DD] py-2.5 pl-3.5 shadow-sm"
-                />
-                <div className="flex gap-1 rounded-md rounded-l-none border border-l-0 border-[#D0D5DD] px-3.5 py-2.5 shadow-sm">
-                  <div>OP</div>
-                  <img src="/icons/chevron-down.svg" alt="" />
-                </div>
-              </div>
-              <div className="flex w-1/4">
-                <div className="flex gap-1 rounded-md rounded-r-none border border-r-0 border-[#D0D5DD] px-3.5 py-2.5 shadow-sm">
-                  <div>%</div>
-                </div>
-                <input
-                  type="text"
-                  value={"33.33"}
-                  className="w-full rounded-md rounded-l-none border border-[#D0D5DD] py-2.5 pl-3.5 shadow-sm"
-                />
-              </div>
-            </div>
-          </div>
-          <div>
-            <div className="flex items-center gap-3 rounded-t-2xl border-2 border-[#E44000] px-5 py-3">
-              <img src="/icons/stack.svg" alt="" />
-              <div>Ethereum Core Contributions</div>
-            </div>
-            <div className="flex w-full items-center justify-between gap-3 rounded-b-2xl border-2 border-t-0 border-[#E44000] p-5">
-              <div className="flex w-3/4">
-                <input
-                  type="text"
-                  value={"5,000,000"}
-                  className="w-full rounded-md rounded-r-none border border-[#D0D5DD] py-2.5 pl-3.5 shadow-sm"
-                />
-                <div className="flex gap-1 rounded-md rounded-l-none border border-l-0 border-[#D0D5DD] px-3.5 py-2.5 shadow-sm">
-                  <div>OP</div>
-                  <img src="/icons/chevron-down.svg" alt="" />
-                </div>
-              </div>
-              <div className="flex w-1/4">
-                <div className="flex gap-1 rounded-md rounded-r-none border border-r-0 border-[#D0D5DD] px-3.5 py-2.5 shadow-sm">
-                  <div>%</div>
-                </div>
-                <input
-                  type="text"
-                  value={"33.33"}
-                  className="w-full rounded-md rounded-l-none border border-[#D0D5DD] py-2.5 pl-3.5 shadow-sm"
-                />
-              </div>
-            </div>
-          </div>
-          <div>
-            <div className="flex items-center gap-3 rounded-t-2xl border-2 border-[#E44000] px-5 py-3">
-              <img src="/icons/stack.svg" alt="" />
-              <div>Ethereum Core Contributions</div>
-            </div>
-            <div className="flex w-full items-center justify-between gap-3 rounded-b-2xl border-2 border-t-0 border-[#E44000] p-5">
-              <div className="flex w-3/4">
-                <input
-                  type="text"
-                  value={"5,000,000"}
-                  className="w-full rounded-md rounded-r-none border border-[#D0D5DD] py-2.5 pl-3.5 shadow-sm"
-                />
-                <div className="flex gap-1 rounded-md rounded-l-none border border-l-0 border-[#D0D5DD] px-3.5 py-2.5 shadow-sm">
-                  <div>OP</div>
-                  <img src="/icons/chevron-down.svg" alt="" />
-                </div>
-              </div>
-              <div className="flex w-1/4">
-                <div className="flex gap-1 rounded-md rounded-r-none border border-r-0 border-[#D0D5DD] px-3.5 py-2.5 shadow-sm">
-                  <div>%</div>
-                </div>
-                <input
-                  type="text"
-                  value={"33.33"}
-                  className="w-full rounded-md rounded-l-none border border-[#D0D5DD] py-2.5 pl-3.5 shadow-sm"
-                />
-              </div>
-            </div>
-          </div>
-          <Separator className="h-[1px] w-full bg-[#E4E7EC]" />
-          <button className="w-full rounded-full bg-[#E44000] px-4 py-2.5 text-white">
-            Submit
-          </button>
+        <Separator className="mt-8 h-[1px] w-[360px] bg-[#E4E7EC]" />
+        <div className="my-6 w-[328px]">
+          <GitHubButton onClick={() => open()} />
         </div>
+        {/* <button className="mb-8 w-[328px] rounded-full bg-[#E44000] px-4 py-2.5 text-white">
+          Continue with email
+        </button>
+        <div className="text-sm font-semibold text-[#B23200]">
+          Continue with SAML SSO
+        </div> */}
       </div>
     </div>
   );
