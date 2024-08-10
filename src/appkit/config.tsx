@@ -11,7 +11,7 @@ export const projectId = 'dd2a5d8744a5d72247899ef644bf8e1e'
 export const metadata = {
   name: 'OptiVote',
   description: 'Retro Funding 5 voting for general developer',
-  url: window.location.origin, // origin must match your domain & subdomain
+  url: typeof window !== 'undefined' ? window.location.origin : 'https://opkit.opti.domains',
   icons: ['https://avatars.githubusercontent.com/u/37784886']
 }
 
