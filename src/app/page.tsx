@@ -4,18 +4,22 @@ import { Separator } from "@radix-ui/react-separator";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useWalletInfo, useWeb3Modal } from '@web3modal/wagmi/react'
+import { useAccount } from "wagmi";
+import { useEffect } from "react";
 
 export default function Login() {
   const { walletInfo } = useWalletInfo()
+  const { isConnected } =useAccount()
   const { open } = useWeb3Modal()
   const { push } = useRouter();
 
   console.log(walletInfo)
 
-  const onSubmit = (data: any) => {
-    console.log(data);
-    push("/internal/dashboard");
-  };
+  useEffect(() => {
+    if (isConnected) {
+      push('category')
+    }
+  }, [isConnected])
 
   return (
     <div className="h-full-screen relative bg-primary-light">
