@@ -4,15 +4,24 @@ import { Progress } from "@/components/ui/progress";
 import { ProjectCardItem } from "@/components/ui/project/vote/CardItem";
 import { Separator } from "@/components/ui/separator";
 import data from "../../../public/projects.json"; // Import the JSON data
-import { useVoting } from "@/reducer/votingReducer";
+import { attestVoting, useVoting } from "@/reducer/votingReducer";
+import { useCallback } from "react";
+import { useEthersSigner } from "@/lib/wagmiEthers";
 
 export default function Vote() {
+  const signer = useEthersSigner();
   const [ voting, dispatch ] = useVoting()
 
   console.log(voting)
 
   const votingTotal = voting.projects.reduce((acc, curr) => acc + curr.allocation, 0)
   const maxOP = voting.categories.opResearch
+
+  const submit = useCallback(async () => {
+    if (signer) {
+      await attestVoting(voting, signer)
+    }
+  }, [voting, signer])
 
   return (
     <div className="relative">
@@ -114,7 +123,7 @@ export default function Vote() {
                 })}
               </div>
               <div className="mt-5 rounded-3xl border border-[#E4E7EC] p-6 text-right shadow-sm">
-                <button className="rounded-full bg-[#E44000] px-4 py-2.5 text-white">
+                <button className="rounded-full bg-[#E44000] px-4 py-2.5 text-white" onClick={() => submit()}>
                   Submit
                 </button>
               </div>
