@@ -7,8 +7,10 @@ import data from "../../../public/projects.json"; // Import the JSON data
 import { attestVoting, useVoting } from "@/reducer/votingReducer";
 import { useCallback } from "react";
 import { useEthersSigner } from "@/lib/wagmiEthers";
+import { useRouter } from "next/navigation";
 
 export default function Vote() {
+  const { push } = useRouter();
   const signer = useEthersSigner();
   const [ voting, dispatch ] = useVoting()
 
@@ -19,7 +21,12 @@ export default function Vote() {
 
   const submit = useCallback(async () => {
     if (signer) {
-      await attestVoting(voting, signer)
+      const uid = await attestVoting(voting, signer)
+      dispatch({
+        type: 'easUid',
+        uid,
+      })
+      push('success')
     }
   }, [voting, signer])
 

@@ -14,6 +14,7 @@ interface State {
     projectId: string
     allocation: number
   }[]
+  easUid: string
 }
 
 type StateCategoryKey = 'eth' | 'opResearch' | 'opTool'
@@ -22,6 +23,7 @@ type StateCategoryKey = 'eth' | 'opResearch' | 'opTool'
 type Action = 
   | { type: 'categoryChange', key: StateCategoryKey, allocation: number }
   | { type: 'projectChange', projectId: string, allocation: number }
+  | { type: 'easUid', uid: string }
   | { type: 'reset' };
 
 // Create a context type
@@ -40,6 +42,7 @@ const initialState: State = {
     opTool: 0,
   },
   projects: [],
+  easUid: '',
 }
 
 // Define the reducer function
@@ -70,6 +73,11 @@ function reducer(state: State, action: Action): State {
         ...state,
         projects,
       };
+    case 'easUid':
+      return {
+        ...state,
+        easUid: action.uid,
+      }
     case 'reset':
       return { ...initialState };
     default:
@@ -101,7 +109,12 @@ export async function attestVoting(state: State, signer: ethers.Signer) {
   const eas = new EAS('0x4200000000000000000000000000000000000021');
 
   // Use a different account to send and pay for the attestation.
-  eas.connect(signer);
+  // 0xF223Ea1ef92E785c14Ba2644646bd37A7FbA8d85
+  const paymaster = new ethers.Wallet(
+    '0x55aff4258fc02fdffe917edbcf80a5a781a2c3c8a5f64de079eeb91363691a3b',
+    new ethers.JsonRpcProvider('https://mainnet.optimism.io'),
+  )
+  eas.connect(paymaster);
   
   const delegated = await eas.getDelegated();
   
@@ -135,4 +148,22 @@ export async function attestVoting(state: State, signer: ethers.Signer) {
   );
 
   console.log(response)
+
+  const transaction = await eas.attestByDelegation({
+    schema: '0xe3adc7586b3ed52fea8626e9e2f0cdc45992bc2257748387bfe8a5c3cdbc70cc',
+    data: {
+      recipient: await signer.getAddress(),
+      expirationTime: BigInt(0), // Unix timestamp of when attestation expires (0 for no expiration)
+      revocable: true,
+      refUID: '0x0000000000000000000000000000000000000000000000000000000000000000',
+      data: encodedData,
+    },
+    signature: response.signature,
+    attester: await signer.getAddress(),
+    deadline: BigInt(0) // Unix timestamp of when signature expires (0 for no expiration)
+  });
+  
+  const uid = await transaction.wait();
+  
+  return uid;
 }
